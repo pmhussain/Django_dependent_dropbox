@@ -10,7 +10,7 @@
     <div class="container">
       <h1>Dependent Dropbox Demo</h1>
 
-      <form  method="post" id = "personform" data-states-url = {% url 'ajax_load_states'%}> {%csrf_token%}
+      <form  method="post" id="personform" data-states-url="{% url 'ajax_load_states'%}" data-districts-url="{% url 'ajax_load_districts'%}"> {%csrf_token%}
 
         <label for="country">Country : </label>
         <select name="country" id="country">
@@ -65,6 +65,28 @@
       success: function( data ) {
         console.log(data);
         $( "#state" ).html(data);
+      }
+    });
+  }
+  )
+
+</script>
+
+
+<script>
+  $("#state").change(function() {
+    const url = $("#personform").attr("data-districts-url");
+    const stateId = $(this).val();
+
+
+    $.ajax({
+      url: url,
+      data: {
+        'state_id': stateId
+      },
+      success: function( data ) {
+        console.log(data);
+        $( "#district" ).html(data);
       }
     });
   }

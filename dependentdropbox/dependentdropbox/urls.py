@@ -21,5 +21,8 @@ from TestApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+
+    # AJAX
     path('ajax/load_states', views.loadstates, name='ajax_load_states'),
+    path('ajax/load_districts', views.loaddistricts, name='ajax_load_districts'),
 ]

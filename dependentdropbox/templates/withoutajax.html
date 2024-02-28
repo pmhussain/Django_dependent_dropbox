@@ -10,22 +10,20 @@
     <div class="container">
       <h1>Dependent Dropbox Demo</h1>
 
-      <form  method="post" id="personform" data-states-url="{% url 'ajax_load_states'%}" data-districts-url="{% url 'ajax_load_districts'%}"> {%csrf_token%}
-
-        <label for="country">Country : </label>
-        <select name="country" id="country">
+        <label for="country_id">Country : </label>
+        <select name="country_id" id="country_id" onchange="countryfield()">
           <option value="">------</option>
           {%for country in  countries%}
-          <option value="{{country.id}}">{{country.name}}</option>
+          <option value="{{country.id}}" {%if request.GET.country_id == country.id|lower %}selected{%endif%}>{{country.id}}-{{country.name}}</option>
           {%endfor%}
         </select>
         <br><br>
 
-        <label for="state">State : </label>
-        <select name="state" id="state">
+        <label for="state_id">State : </label>
+        <select name="state_id" id="state_id" onchange="statefield()">
           <option value="">------</option>
           {%for state in  states%}
-          <option value="{{state.id}}">{{state.name}}</option>
+          <option value="{{state.id}}" {%if request.GET.state_id == state.id|lower %}selected{%endif%}>{{state.name}}</option>
           {%endfor%}
         </select>
         <br><br>
@@ -40,10 +38,9 @@
         </select>
         <br><br>
 
-        <input type="submit" value="Submit">
-      </form>
+
       <br><br>
-      <a href="{%url 'withoutajax'%}" class="btn btn-primary">Another way without using ajax</a>
+      <a href="{%url 'home'%}" class="btn btn-info">Back</a>
     </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -52,53 +49,16 @@
   </body>
 </html>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
-  $("#country").change(function() {
-    const url = $("#personform").attr("data-states-url");
-    const countryId = $(this).val();
+function countryfield() {
+  var country_id = document.getElementById("country_id").value;
+  console.log(country_id);
+  window.location = "/withoutajax"+"/?country_id="+country_id;
+}
 
-
-    $.ajax({
-      url: url,
-
-      beforeSend: function(){
-        $( "#state" ).find('option').not(':first').remove();
-        $( "#district" ).find('option').not(':first').remove();
-      },
-
-      data: {
-        'country_id': countryId
-      },
-
-      success: function( data ) {
-        console.log(data);
-        $( "#state" ).html(data);
-      }
-    });
-  }
-  )
-
-</script>
-
-
-<script>
-  $("#state").change(function() {
-    const url = $("#personform").attr("data-districts-url");
-    const stateId = $(this).val();
-
-
-    $.ajax({
-      url: url,
-      data: {
-        'state_id': stateId
-      },
-      success: function( data ) {
-        console.log(data);
-        $( "#district" ).html(data);
-      }
-    });
-  }
-  )
-
+function statefield() {
+  var state_id = document.getElementById("state_id").value;
+  console.log(state_id);
+  window.location = "/withoutajax"+"/?country_id="+'{{request.GET.country_id}}'+"&state_id="+state_id;
+}
 </script>

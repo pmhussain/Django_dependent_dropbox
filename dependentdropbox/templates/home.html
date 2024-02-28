@@ -10,7 +10,10 @@
     <div class="container">
       <h1>Dependent Dropbox Demo</h1>
 
-      <form  method="post" id="personform" data-states-url="{% url 'ajax_load_states'%}" data-districts-url="{% url 'ajax_load_districts'%}"> {%csrf_token%}
+      <form  method="post"> {%csrf_token%}
+
+        <label for="name">Name : </label>
+        <input type="text" name="name" value="" placeholder="Enter Name"> <br><br>
 
         <label for="country">Country : </label>
         <select name="country" id="country">
@@ -24,9 +27,6 @@
         <label for="state">State : </label>
         <select name="state" id="state">
           <option value="">------</option>
-          {%for state in  states%}
-          <option value="{{state.id}}">{{state.name}}</option>
-          {%endfor%}
         </select>
         <br><br>
 
@@ -34,9 +34,6 @@
         <label for="district">District : </label>
         <select name="district" id="district">
           <option value="">------</option>
-          {%for district in  districts%}
-          <option value="{{district.id}}">{{district.name}}</option>
-          {%endfor%}
         </select>
         <br><br>
 
@@ -55,9 +52,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
   $("#country").change(function() {
-    const url = $("#personform").attr("data-states-url");
+    const url = "{% url 'ajax_load_states'%}"
     const countryId = $(this).val();
-
 
     $.ajax({
       url: url,
@@ -84,10 +80,8 @@
 
 <script>
   $("#state").change(function() {
-    const url = $("#personform").attr("data-districts-url");
+    const url = "{% url 'ajax_load_districts'%}"
     const stateId = $(this).val();
-
-
     $.ajax({
       url: url,
       data: {

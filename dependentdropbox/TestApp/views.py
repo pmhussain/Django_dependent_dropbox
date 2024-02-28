@@ -10,6 +10,18 @@ def home(request):
     'states' : states,
     'districts' : districts,
     }
+    if request.method == 'POST':
+        print(request.POST)
+        country_id =int(request.POST.get('country'))
+        state_id = int(request.POST.get('state'))
+        district_id = int(request.POST.get('district'))
+        print(type(country_id),country_id)
+        name = request.POST.get('name')
+        country = Country.objects.get(id=country_id)
+        state = State.objects.get(id=state_id)
+        district = District.objects.get(id=district_id)
+        person = Person(name=name,country=country,state=state, district=district)
+        person.save()
     return render (request, 'home.html',context)
 
 
@@ -38,17 +50,17 @@ def loaddistricts(request):
 #Without AJAX
 def withoutajax(request):
     countries = Country.objects.all()
-    country_id = request.GET.get('country_id', None)
-    state_id = request.GET.get('state_id', None)
+    country = request.GET.get('country', None)
+    state = request.GET.get('state', None)
     states = None
     districts = None
     print(locals())
-    if country_id:
-        get_country = Country.objects.get(id=country_id)
+    if country:
+        get_country = Country.objects.get(name=country)
         states = State.objects.filter(country=get_country)
         print(states)
-    if state_id:
-        get_state = State.objects.get(id=state_id)
+    if state:
+        get_state = State.objects.get(name=state)
         districts = District.objects.filter(state=get_state)
         print(districts)
     context = {

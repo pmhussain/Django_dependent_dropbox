@@ -21,7 +21,7 @@ from TestApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('withoutajax/', views.withoutajax, name='withoutajax'),
+    path('withoutajax/', views.withoutajax, name='withoutajax'), #without AJAX
 
     # AJAX
     path('ajax/load_states', views.loadstates, name='ajax_load_states'),

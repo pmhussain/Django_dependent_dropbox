@@ -10,20 +10,20 @@
     <div class="container">
       <h1>Dependent Dropbox Demo</h1>
 
-        <label for="country_id">Country : </label>
-        <select name="country_id" id="country_id" onchange="countryfield()">
+        <label for="country">Country : </label>
+        <select name="country" id="country" onchange="countryfield()">
           <option value="">------</option>
           {%for country in  countries%}
-          <option value="{{country.id}}" {%if request.GET.country_id == country.id|lower %}selected{%endif%}>{{country.id}}-{{country.name}}</option>
+          <option value="{{country.name}}" {%if request.GET.country == country.name %}selected{%endif%}>{{country.name}}</option>
           {%endfor%}
         </select>
         <br><br>
 
-        <label for="state_id">State : </label>
-        <select name="state_id" id="state_id" onchange="statefield()">
+        <label for="state">State : </label>
+        <select name="state" id="state" onchange="statefield()">
           <option value="">------</option>
           {%for state in  states%}
-          <option value="{{state.id}}" {%if request.GET.state_id == state.id|lower %}selected{%endif%}>{{state.name}}</option>
+          <option value="{{state.name}}" {%if request.GET.state == state.name %}selected{%endif%}>{{state.name}}</option>
           {%endfor%}
         </select>
         <br><br>
@@ -38,7 +38,6 @@
         </select>
         <br><br>
 
-
       <br><br>
       <a href="{%url 'home'%}" class="btn btn-info">Back</a>
     </div>
@@ -51,14 +50,14 @@
 
 <script>
 function countryfield() {
-  var country_id = document.getElementById("country_id").value;
-  console.log(country_id);
-  window.location = "/withoutajax"+"/?country_id="+country_id;
+  var country = document.getElementById("country").value;
+  console.log(country);
+  window.location = "/withoutajax"+"/?country="+country;
 }
 
 function statefield() {
-  var state_id = document.getElementById("state_id").value;
-  console.log(state_id);
-  window.location = "/withoutajax"+"/?country_id="+'{{request.GET.country_id}}'+"&state_id="+state_id;
+  var state = document.getElementById("state").value;
+  console.log(state);
+  window.location = "/withoutajax"+"/?country="+'{{request.GET.country}}'+"&state="+state;
 }
 </script>
